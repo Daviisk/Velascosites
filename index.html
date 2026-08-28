@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velasco — Sites sob medida para o seu negócio</title>
+<meta name="description" content="Sites rápidos, modernos e feitos sob medida. Do primeiro contato ao site no ar, sem enrolação e falando direto com o desenvolvedor.">
+
+<!-- Cabeçalhos de segurança que podem ser definidos via <meta> (o resto vai no vercel.json, pois só funcionam como cabeçalho HTTP real) -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self';">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" referrerpolicy="no-referrer"></script>
+
+<style>
+  :root{
+    --bg:#08080a;
+    --panel:#131316;
+    --panelalt:#1b1b1f;
+    --gold:#c9a463;
+    --goldlight:#e6c98a;
+    --ink:#f4f4f5;
+    --inkmute:#c7c8cc;
+    --line:rgba(244,244,245,0.09);
+    --syn-tag:#cf9fc2;
+    --syn-string:#9bcf9f;
+    --syn-comment:#68686e;
+    --font-display:'Syne', ui-sans-serif, system-ui, sans-serif;
+    --font-body:'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; }
+  html{ background:var(--bg); scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{ font-family:var(--font-display); line-height:1.1; }
+  .mono{ font-family:var(--font-mono); }
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; }
+  button{ font-family:inherit; background:none; border:none; color:inherit; cursor:pointer; }
+  ul{ list-style:none; }
+
+  ::selection{ background:var(--gold); color:#08080a; }
+
+  a:focus-visible, button:focus-visible, summary:focus-visible{
+    outline:2px solid var(--goldlight);
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+  .skip-link{
+    background:var(--goldlight); color:#08080a; padding:10px 16px; border-radius:8px;
+    font-family:var(--font-mono); font-size:0.85rem; font-weight:600;
+  }
+  .skip-link:focus{
+    position:fixed; top:12px; left:12px; z-index:200; width:auto; height:auto;
+    margin:0; overflow:visible; clip:auto; white-space:normal;
+  }
+
+  /* ---------- layout helpers ---------- */
+  .wrap{ max-width:1152px; margin:0 auto; padding:0 20px; }
+  .wrap-sm{ max-width:760px; margin:0 auto; padding:0 20px; }
+  @media (min-width:768px){ .wrap, .wrap-sm{ padding:0 32px; } }
+
+  .section{ padding:88px 0; border-top:1px solid var(--line); }
+  @media (min-width:768px){ .section{ padding:120px 0; } }
+
+  .glow{ background:radial-gradient(60% 50% at 50% 0%, rgba(201,164,99,0.16), transparent 70%); }
+
+  .eyebrow{
+    font-family:var(--font-mono); font-size:0.75rem; letter-spacing:0.06em; color:var(--gold);
+    margin-bottom:16px;
+  }
+  .eyebrow::before{ content:'// '; color:var(--syn-comment); }
+
+  .heading-block{ max-width:640px; margin-bottom:56px; }
+  .heading-block h2{ font-size:1.9rem; font-weight:700; }
+  @media (min-width:768px){ .heading-block h2{ font-size:2.6rem; } }
+
+  .panel{ background:var(--panel); border:1px solid var(--line); }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    border-radius:999px; font-size:0.875rem; font-weight:600; text-decoration:none;
+    padding:14px 28px; white-space:nowrap;
+  }
+  .btn-sm{ padding:10px 20px; font-size:0.8rem; }
+  .btn-xs{ padding:8px 20px; font-size:0.75rem; }
+
+  .btn-gold{
+    background:linear-gradient(180deg, var(--goldlight), var(--gold));
+    color:#0a0a0c; font-weight:700;
+    box-shadow:0 1px 0 rgba(255,255,255,0.35) inset, 0 8px 24px -8px rgba(201,164,99,0.55);
+    transition:transform .25s ease, box-shadow .25s ease, filter .25s ease;
+  }
+  .btn-gold:hover{
+    transform:translateY(-2px);
+    box-shadow:0 1px 0 rgba(255,255,255,0.45) inset, 0 14px 32px -8px rgba(230,201,138,0.65);
+    filter:brightness(1.04);
+  }
+  .btn-gold:active{ transform:translateY(0); }
+
+  .btn-ghost{
+    border:1px solid var(--line); color:var(--ink);
+    transition:border-color .25s ease, background-color .25s ease;
+  }
+  .btn-ghost:hover{ border-color:rgba(201,164,99,0.55); background:rgba(201,164,99,0.06); }
+
+  /* ---------- nav ---------- */
+  .nav{ position:fixed; top:0; left:0; right:0; z-index:50; }
+  .nav__inner{
+    margin-top:12px; display:flex; align-items:center; justify-content:space-between;
+    border-radius:16px; border:1px solid var(--line);
+    background:rgba(11,11,13,0.82); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    padding:12px 16px;
+  }
+  @media (min-width:768px){ .nav__inner{ padding:12px 20px; } }
+
+  .nav__brand{
+    display:flex; align-items:center; gap:8px; font-family:var(--font-display);
+    font-weight:700; font-size:1.15rem; text-decoration:none;
+  }
+  .nav__brand span{ color:var(--gold); font-family:var(--font-mono); }
+
+  .nav__links{ display:none; align-items:center; gap:32px; font-family:var(--font-mono); font-size:0.8rem; color:var(--inkmute); }
+  @media (min-width:768px){ .nav__links{ display:flex; } }
+  .nav__links a{ text-decoration:none; transition:color .25s ease; }
+  .nav__links a:hover{ color:var(--goldlight); }
+
+  .nav__actions{ display:flex; align-items:center; gap:12px; }
+  .nav__cta{ display:none; }
+  @media (min-width:640px){ .nav__cta{ display:inline-flex; } }
+
+  .nav__burger{
+    display:grid; place-items:center; width:40px; height:40px; border-radius:10px;
+    border:1px solid var(--line);
+  }
+  @media (min-width:768px){ .nav__burger{ display:none; } }
+
+  /* ---------- mobile menu ---------- */
+  .mobile-menu{
+    position:fixed; top:0; right:0; height:100%; width:78%; max-width:320px; z-index:60;
+    background:var(--panel); border-left:1px solid var(--line); padding:24px;
+    display:flex; flex-direction:column;
+    transform:translateX(100%); transition:transform .4s cubic-bezier(.77,0,.18,1);
+  }
+  @media (min-width:768px){ .mobile-menu{ display:none; } }
+  .mobile-menu.open{ transform:translateX(0); }
+
+  .mobile-menu__head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:48px; }
+  .mobile-menu__head span{ font-family:var(--font-mono); color:var(--gold); font-size:0.85rem; }
+  .mobile-menu__close{
+    width:36px; height:36px; display:grid; place-items:center; border-radius:10px; border:1px solid var(--line);
+  }
+  .mobile-menu__links{ display:flex; flex-direction:column; gap:26px; font-family:var(--font-mono); font-size:1.1rem; }
+  .mobile-menu__links a{ text-decoration:none; }
+  .mobile-menu .btn{ margin-top:auto; }
+
+  .menu-overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:55;
+    opacity:0; pointer-events:none; transition:opacity .3s ease;
+  }
+  .menu-overlay.open{ opacity:1; pointer-events:auto; }
+  @media (min-width:768px){ .menu-overlay{ display:none; } }
+
+  /* ---------- grain ---------- */
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:40; opacity:0.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- hero ---------- */
+  .hero{ position:relative; min-height:100svh; display:flex; align-items:center; padding:132px 0 56px; }
+  @media (min-width:768px){ .hero{ padding-top:104px; } }
+
+  .hero__grid{ display:grid; gap:52px; align-items:center; }
+  @media (min-width:1024px){ .hero__grid{ grid-template-columns:1fr 1fr; gap:64px; } }
+
+  .hero h1{ font-size:2.4rem; font-weight:700; line-height:1.18; letter-spacing:-0.01em; }
+  @media (min-width:480px){ .hero h1{ font-size:2.75rem; } }
+  @media (min-width:768px){ .hero h1{ font-size:3.3rem; line-height:1.14; } }
+
+  .hero__gold{
+    background:linear-gradient(180deg, var(--goldlight), var(--gold));
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+
+  .hero__sub{ margin-top:22px; color:var(--inkmute); font-size:1rem; line-height:1.65; max-width:460px; }
+  @media (min-width:768px){ .hero__sub{ font-size:1.1rem; } }
+
+  .hero__ctas{ margin-top:34px; display:flex; flex-wrap:wrap; align-items:center; gap:14px; }
+
+  .hero__badge{
+    margin-top:28px; display:inline-flex; align-items:center; gap:10px;
+    border:1px solid var(--line); border-radius:999px; padding:9px 16px;
+  }
+  .hero__badge span{ font-family:var(--font-mono); font-size:0.72rem; color:var(--inkmute); }
+
+  .status-dot{
+    width:7px; height:7px; border-radius:50%; background:#8fd39b;
+    box-shadow:0 0 0 3px rgba(143,211,155,0.15); animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:0.45; } }
+
+  /* ---------- editor mock ---------- */
+  .editor{ background:#0d0d0f; border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:0 30px 60px -20px rgba(0,0,0,0.6); }
+  .editor__topbar{ background:var(--panelalt); border-bottom:1px solid var(--line); display:flex; align-items:center; padding:12px 16px; gap:8px; }
+  .dot{ width:9px; height:9px; border-radius:50%; }
+  .editor__tabs{ display:flex; margin-left:12px; }
+  .tab{ font-family:var(--font-mono); font-size:0.72rem; color:var(--inkmute); border-right:1px solid var(--line); padding:6px 12px; }
+  .tab.active{ color:var(--goldlight); background:#0d0d0f; }
+
+  .editor__body{ display:grid; }
+  @media (min-width:640px){ .editor__body{ grid-template-columns:1fr 1fr; } }
+
+  .editor__code{
+    padding:20px; font-family:var(--font-mono); font-size:0.78rem; line-height:1.6;
+    border-bottom:1px solid var(--line); min-height:220px;
+  }
+  @media (min-width:640px){ .editor__code{ border-bottom:none; border-right:1px solid var(--line); } }
+  @media (max-width:639px){ .editor__code{ min-height:0; padding-right:66px; } }
+
+  .editor__preview{
+    padding:20px; min-height:220px; display:flex; flex-direction:column; justify-content:center;
+    background:linear-gradient(180deg, #0f0f12, #0b0b0d);
+  }
+  @media (max-width:639px){ .editor__preview{ min-height:150px; } }
+  .editor__preview h4{ opacity:0; font-size:1.25rem; font-weight:700; }
+  .editor__preview p{ opacity:0; margin-top:8px; font-size:0.8rem; color:var(--inkmute); }
+  .editor__preview .btn{ opacity:0; margin-top:20px; align-self:flex-start; }
+
+  .code-line{ min-height:1.35rem; white-space:pre-wrap; word-break:break-word; }
+  .caret{
+    display:inline-block; width:7px; height:1.05rem; background:var(--goldlight);
+    vertical-align:-3px; animation:blink 1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .editor__caption{ font-family:var(--font-mono); font-size:0.7rem; color:var(--inkmute); margin-top:12px; text-align:center; }
+
+  /* ---------- dores/solucao ---------- */
+  .pain-grid{ display:grid; gap:20px; }
+  @media (min-width:768px){ .pain-grid{ grid-template-columns:1fr 1fr; } }
+
+  .pain-card{ border-radius:18px; padding:32px; }
+  .pain-card__label{ font-family:var(--font-mono); font-size:0.75rem; margin-bottom:22px; }
+  .pain-card ul{ display:flex; flex-direction:column; gap:14px; font-size:0.92rem; line-height:1.6; }
+  .pain-card li{ display:flex; gap:12px; }
+
+  .pain-card--bad{ background:var(--panel); border:1px solid var(--line); }
+  .pain-card--bad .pain-card__label{ color:var(--inkmute); }
+  .pain-card--bad li{ color:var(--inkmute); }
+  .pain-card--bad li span{ color:rgba(199,200,204,0.5); }
+
+  .pain-card--good{
+    border:1px solid rgba(201,164,99,0.35);
+    background:linear-gradient(180deg, rgba(201,164,99,0.08), transparent);
+  }
+  .pain-card--good .pain-card__label{ color:var(--gold); }
+  .pain-card--good li span{ color:var(--goldlight); }
+
+  .tag-row{ margin-top:24px; display:flex; flex-wrap:wrap; gap:10px; }
+  .tag{ font-family:var(--font-mono); font-size:0.72rem; border:1px solid var(--line); border-radius:999px; padding:8px 16px; color:var(--inkmute); }
+
+  /* ---------- diferenciais ---------- */
+  .cards-grid{ display:grid; gap:18px; grid-template-columns:1fr; }
+  @media (min-width:640px){ .cards-grid{ grid-template-columns:1fr 1fr; } }
+  @media (min-width:1024px){ .cards-grid{ grid-template-columns:repeat(4,1fr); } }
+
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:28px;
+    transition:border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+  }
+  .card:hover{ border-color:rgba(201,164,99,0.5); transform:translateY(-4px); box-shadow:0 20px 40px -24px rgba(0,0,0,0.6); }
+  .card svg{ color:var(--goldlight); margin-bottom:22px; }
+  .card h3{ font-size:1.1rem; font-weight:700; margin-bottom:8px; }
+  .card p{ font-size:0.9rem; color:var(--inkmute); line-height:1.6; }
+
+  /* ---------- portfolio ---------- */
+  .portfolio-grid{ display:grid; gap:20px; grid-template-columns:1fr; }
+  @media (min-width:768px){ .portfolio-grid{ grid-template-columns:1fr 1fr; } }
+  @media (min-width:1024px){ .portfolio-grid{ grid-template-columns:repeat(3,1fr); } }
+
+  .portfolio-card{
+    display:block; text-decoration:none; border-radius:16px; overflow:hidden;
+    background:var(--panel); border:1px solid var(--line);
+    transition:border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+  }
+  .portfolio-card:hover{ border-color:rgba(201,164,99,0.5); transform:translateY(-4px); box-shadow:0 20px 40px -24px rgba(0,0,0,0.6); }
+
+  .portfolio-card__bar{
+    background:var(--panelalt); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:8px; padding:12px 16px;
+  }
+  .portfolio-card__bar .dot{ width:9px; height:9px; }
+  .portfolio-card__url{
+    margin-left:8px; font-family:var(--font-mono); font-size:0.7rem; color:var(--inkmute);
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+
+  .portfolio-card__body{ padding:28px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .portfolio-card__body h3{ font-size:1.1rem; font-weight:700; margin-bottom:6px; }
+  .portfolio-card__body p{ font-size:0.85rem; color:var(--inkmute); }
+  .portfolio-card__arrow{
+    flex-shrink:0; width:40px; height:40px; border-radius:50%; border:1px solid var(--line);
+    display:grid; place-items:center; color:var(--goldlight); transition:border-color .3s ease, transform .3s ease;
+  }
+  .portfolio-card:hover .portfolio-card__arrow{ border-color:rgba(201,164,99,0.5); transform:translate(2px,-2px); }
+
+  /* ---------- manifesto / prova social ---------- */
+  .manifesto{ border-radius:24px; border:1px solid var(--line); padding:44px 24px; text-align:center; }
+  @media (min-width:768px){ .manifesto{ padding:64px; } }
+  .manifesto p.eyebrow{ justify-content:center; margin-bottom:18px; }
+  .manifesto h2{ font-size:1.9rem; font-weight:800; }
+  @media (min-width:768px){ .manifesto h2{ font-size:2.9rem; } }
+
+  .testimonial-grid{ margin-top:32px; display:grid; gap:18px; grid-template-columns:1fr; }
+  @media (min-width:768px){ .testimonial-grid{ grid-template-columns:repeat(3,1fr); } }
+
+  .testimonial p{ font-size:0.9rem; color:var(--inkmute); line-height:1.6; margin-bottom:22px; }
+  .testimonial__who{ display:flex; align-items:center; gap:12px; }
+  .avatar{
+    width:36px; height:36px; border-radius:50%; background:var(--panelalt); border:1px solid var(--line);
+    display:grid; place-items:center; font-family:var(--font-mono); font-size:0.72rem; color:var(--gold);
+  }
+  .testimonial__who strong{ display:block; font-size:0.9rem; font-weight:600; }
+  .testimonial__who small{ font-size:0.78rem; color:var(--inkmute); }
+
+  .note{ font-family:var(--font-mono); font-size:0.7rem; color:var(--inkmute); margin-top:16px; }
+
+  /* ---------- processo ---------- */
+  .process-grid{ margin-top:16px; display:grid; gap:32px; grid-template-columns:1fr; position:relative; }
+  @media (min-width:768px){ .process-grid{ grid-template-columns:repeat(4,1fr); } }
+
+  .process-line{ display:none; }
+  @media (min-width:768px){
+    .process-line{ display:block; position:absolute; top:24px; left:12.5%; right:12.5%; height:1px; background:var(--line); }
+  }
+
+  .step{ position:relative; }
+  .step__num{
+    width:48px; height:48px; border-radius:50%; display:grid; place-items:center;
+    font-family:var(--font-mono); font-size:0.9rem; color:var(--gold); background:var(--panel); border:1px solid var(--line);
+    margin-bottom:20px; position:relative; z-index:1;
+  }
+  .step__num--final{ color:#0a0a0c; background:linear-gradient(180deg, var(--goldlight), var(--gold)); border:none; }
+  .step h3{ font-size:1.05rem; font-weight:700; margin-bottom:8px; }
+  .step p{ font-size:0.9rem; color:var(--inkmute); line-height:1.6; }
+
+  /* ---------- FAQ ---------- */
+  .faq-list{ display:flex; flex-direction:column; gap:12px; }
+  .faq-item{ background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px 24px; }
+  .faq-toggle{
+    width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px; text-align:left;
+  }
+  .faq-toggle span:first-child{ font-family:var(--font-display); font-weight:600; font-size:0.98rem; }
+  .faq-icon{ font-family:var(--font-mono); color:var(--gold); font-size:1.3rem; line-height:1; transition:transform .3s ease; flex-shrink:0; }
+  .faq-item.open .faq-icon{ transform:rotate(45deg); }
+  .faq-answer{ max-height:0; overflow:hidden; transition:max-height .4s ease; }
+  .faq-item.open .faq-answer{ max-height:400px; }
+  .faq-answer p{ font-size:0.9rem; color:var(--inkmute); line-height:1.6; padding-top:16px; }
+
+  /* ---------- footer ---------- */
+  .footer-cta{
+    border-radius:24px; padding:44px 24px; text-align:center;
+    border:1px solid rgba(201,164,99,0.35); background:linear-gradient(180deg, rgba(201,164,99,0.08), transparent);
+  }
+  @media (min-width:768px){ .footer-cta{ padding:64px; } }
+  .footer-cta h2{ font-size:1.9rem; font-weight:800; margin-bottom:20px; }
+  @media (min-width:768px){ .footer-cta h2{ font-size:2.9rem; } }
+  .footer-cta p{ color:var(--inkmute); margin-bottom:32px; max-width:420px; margin-left:auto; margin-right:auto; }
+
+  .footer-bottom{
+    margin-top:56px; display:flex; flex-direction:column; align-items:center; gap:20px;
+    font-size:0.9rem; color:var(--inkmute); text-align:center;
+  }
+  @media (min-width:640px){ .footer-bottom{ flex-direction:row; justify-content:space-between; text-align:left; } }
+
+  .footer-brand{ display:flex; align-items:center; gap:8px; font-family:var(--font-display); font-weight:700; color:var(--ink); }
+  .footer-brand span{ color:var(--gold); font-family:var(--font-mono); }
+
+  .footer-links{ display:flex; flex-wrap:wrap; justify-content:center; gap:18px; font-family:var(--font-mono); font-size:0.75rem; }
+  .footer-links a{ text-decoration:none; transition:color .25s ease; }
+  .footer-links a:hover{ color:var(--goldlight); }
+
+  .footer-copy{ margin-top:28px; font-family:var(--font-mono); font-size:0.7rem; color:rgba(199,200,204,0.6); text-align:center; }
+  @media (min-width:640px){ .footer-copy{ text-align:left; } }
+
+  /* ---------- floating whatsapp ---------- */
+  .fab{
+    position:fixed; bottom:20px; right:20px; z-index:50; width:56px; height:56px; border-radius:50%;
+    display:grid; place-items:center; box-shadow:0 20px 40px -12px rgba(0,0,0,0.6);
+  }
+  .fab svg{ display:block; transform:translateY(-1.5px); }
+  @media (max-width:640px){
+    .fab{ width:48px; height:48px; bottom:14px; right:14px; }
+    .fab svg{ width:20px; height:20px; transform:translateY(-1px); }
+  }
+
+  ::-webkit-scrollbar{ width:10px; }
+  ::-webkit-scrollbar-track{ background:var(--bg); }
+  ::-webkit-scrollbar-thumb{ background:var(--panelalt); border-radius:6px; }
+
+  .reveal{ opacity:0; transform:translateY(28px); }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+    .reveal{ opacity:1 !important; transform:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#conteudo" class="sr-only skip-link">Pular para o conteúdo</a>
+
+<div class="grain"></div>
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="topo">
+  <div class="wrap">
+    <div class="nav__inner">
+      <a href="#topo" class="nav__brand"><span>&lt;/&gt;</span>velasco</a>
+
+      <div class="nav__links">
+        <a href="#servicos">Serviços</a>
+        <a href="#diferenciais">Diferenciais</a>
+        <a href="#trabalhos">Trabalhos</a>
+        <a href="#processo">Processo</a>
+        <a href="#faq">FAQ</a>
+      </div>
+
+      <div class="nav__actions">
+        <a href="https://wa.me/5562981368771?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20cria%C3%A7%C3%A3o%20de%20sites."
+           target="_blank" rel="noopener noreferrer" class="btn btn-gold btn-sm nav__cta">Chamar no WhatsApp</a>
+        <button id="menuBtn" class="nav__burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobileMenu">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M1 4H17M1 9H17M1 14H17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div id="mobileMenu" class="mobile-menu">
+  <div class="mobile-menu__head">
+    <span class="mono">Menu</span>
+    <button id="menuClose" class="mobile-menu__close" aria-label="Fechar menu">
+      <svg width="14" height="14" viewBox="0 0 14 14"><path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="mobile-menu__links">
+    <a href="#servicos" class="mobile-link">Serviços</a>
+    <a href="#diferenciais" class="mobile-link">Diferenciais</a>
+    <a href="#trabalhos" class="mobile-link">Trabalhos</a>
+    <a href="#processo" class="mobile-link">Processo</a>
+    <a href="#faq" class="mobile-link">FAQ</a>
+  </div>
+  <a href="https://wa.me/5562981368771?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20cria%C3%A7%C3%A3o%20de%20sites."
+     target="_blank" rel="noopener noreferrer" class="btn btn-gold">Chamar no WhatsApp</a>
+</div>
+<div id="menuOverlay" class="menu-overlay"></div>
+
+<main id="conteudo">
+
+<!-- ================= HERO ================= -->
+<section class="hero glow">
+  <div class="wrap">
+    <div class="hero__grid">
+
+      <div>
+        <p class="eyebrow mono">criacao-de-sites --sob-medida</p>
+        <h1 class="reveal">Seu negócio merece um <span class="hero__gold">site à altura</span> dele.</h1>
+        <p class="hero__sub reveal">Crio sites rápidos, modernos e feitos sob medida — do primeiro contato ao site no ar, sem enrolação e falando direto comigo.</p>
+
+        <div class="hero__ctas reveal">
+          <a href="https://wa.me/5562981368771?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20cria%C3%A7%C3%A3o%20de%20sites."
+             target="_blank" rel="noopener noreferrer" class="btn btn-gold">Chamar no WhatsApp</a>
+          <a href="#servicos" class="btn btn-ghost">Ver serviços</a>
+        </div>
+
+        <div class="hero__badge reveal">
+          <span class="status-dot"></span>
+          <span>Atendimento direto, sem agência e sem intermediário.</span>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="editor">
+          <div class="editor__topbar">
+            <span class="dot" style="background:#4a4a50"></span>
+            <span class="dot" style="background:#4a4a50"></span>
+            <span class="dot" style="background:var(--gold)"></span>
+            <div class="editor__tabs">
+              <div class="tab active">index.html</div>
+              <div class="tab">style.css</div>
+            </div>
+          </div>
+          <div class="editor__body">
+            <div class="editor__code" id="codePane"></div>
+            <div class="editor__preview" id="previewPane">
+              <h4 id="pvHeading">Barbearia Nunes</h4>
+              <p id="pvText">Cortes clássicos, ambiente moderno.</p>
+              <a href="#" class="btn btn-gold btn-xs" id="pvButton" tabindex="-1" aria-hidden="true">Agendar horário</a>
+            </div>
+          </div>
+        </div>
+        <p class="editor__caption">código sendo escrito → site no ar, em tempo real</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= DORES & SOLUÇÃO ================= -->
+<section id="servicos" class="section">
+  <div class="wrap">
+    <div class="heading-block reveal">
+      <p class="eyebrow">o-problema</p>
+      <h2>Cansado de esperar meses por um site que nunca fica pronto?</h2>
+    </div>
+
+    <div class="pain-grid">
+      <div class="pain-card pain-card--bad reveal">
+        <p class="pain-card__label mono">agencia-tradicional.js</p>
+        <ul>
+          <li><span>×</span> Projetos que se arrastam por meses</li>
+          <li><span>×</span> Você fala com atendente, não com quem faz</li>
+          <li><span>×</span> Layout genérico, sem cara do seu negócio</li>
+          <li><span>×</span> Preço salgado pra quem tá começando</li>
+        </ul>
+      </div>
+
+      <div class="pain-card pain-card--good reveal">
+        <p class="pain-card__label mono">velasco.js</p>
+        <ul>
+          <li><span>✓</span> Site no ar em poucas semanas</li>
+          <li><span>✓</span> Você fala direto comigo, do início ao fim</li>
+          <li><span>✓</span> Design feito sob medida pro seu negócio</li>
+          <li><span>✓</span> Preço justo, sem letra miúda</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tag-row reveal">
+      <span class="tag">Sites institucionais</span>
+      <span class="tag">Landing pages de conversão</span>
+      <span class="tag">Sites para comércio local</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DIFERENCIAIS ================= -->
+<section id="diferenciais" class="section">
+  <div class="wrap">
+    <div class="heading-block reveal">
+      <p class="eyebrow">diferenciais</p>
+      <h2>Por que trabalhar comigo</h2>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card reveal">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M13 2L15.5 9.5L23 12L15.5 14.5L13 22L10.5 14.5L3 12L10.5 9.5L13 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+        <h3>Atendimento direto</h3>
+        <p>Você fala comigo, sempre. Sem burocracia, sem intermediário, sem fila de agência.</p>
+      </div>
+      <div class="card reveal">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><path d="M4 13H16M16 13L11 8M16 13L11 18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 5V21" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3>Entrega rápida</h3>
+        <p>Do primeiro contato ao site no ar em poucas semanas, com acompanhamento em cada etapa.</p>
+      </div>
+      <div class="card reveal">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><rect x="8" y="2" width="10" height="22" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M12 20H14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <h3>Ultra-responsivo</h3>
+        <p>Perfeito no celular, tablet e desktop — porque é lá que seu cliente vai te encontrar.</p>
+      </div>
+      <div class="card reveal">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="9.5" stroke="currentColor" stroke-width="1.4"/><path d="M13 8V13L16.5 15.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3>Preço justo</h3>
+        <p>Valor acessível pra quem está começando, sem cortar qualidade ou personalização.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TRABALHOS ================= -->
+<section id="trabalhos" class="section">
+  <div class="wrap">
+    <div class="heading-block reveal">
+      <p class="eyebrow">trabalhos</p>
+      <h2>Alguns sites que já entreguei</h2>
+    </div>
+
+    <div class="portfolio-grid">
+      <a href="https://wmcell.vercel.app" target="_blank" rel="noopener noreferrer" class="portfolio-card reveal">
+        <div class="portfolio-card__bar">
+          <span class="dot" style="background:#4a4a50"></span>
+          <span class="dot" style="background:#4a4a50"></span>
+          <span class="dot" style="background:var(--gold)"></span>
+          <span class="portfolio-card__url mono">wmcell.vercel.app</span>
+        </div>
+        <div class="portfolio-card__body">
+          <div>
+            <h3>WM Cell</h3>
+            <p>Site institucional para loja de celulares e acessórios.</p>
+          </div>
+          <div class="portfolio-card__arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://trevosbarbearia.vercel.app" target="_blank" rel="noopener noreferrer" class="portfolio-card reveal">
+        <div class="portfolio-card__bar">
+          <span class="dot" style="background:#4a4a50"></span>
+          <span class="dot" style="background:#4a4a50"></span>
+          <span class="dot" style="background:var(--gold)"></span>
+          <span class="portfolio-card__url mono">trevosbarbearia.vercel.app</span>
+        </div>
+        <div class="portfolio-card__body">
+          <div>
+            <h3>Trevo's Barbearia</h3>
+            <p>Site para barbearia, com visual moderno e foco em agendamento.</p>
+          </div>
+          <div class="portfolio-card__arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://casellapizzas.vercel.app" target="_blank" rel="noopener noreferrer" class="portfolio-card reveal">
+        <div class="portfolio-card__bar">
+          <span class="dot" style="background:#4a4a50"></span>
+          <span class="dot" style="background:#4a4a50"></span>
+          <span class="dot" style="background:var(--gold)"></span>
+          <span class="portfolio-card__url mono">casellapizzas.vercel.app</span>
+        </div>
+        <div class="portfolio-card__body">
+          <div>
+            <h3>Casella Pizzas</h3>
+            <p>Site para pizzaria, com cardápio em destaque e pedido facilitado.</p>
+          </div>
+          <div class="portfolio-card__arrow">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H5M12 4V11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MANIFESTO / PROVA SOCIAL ================= -->
+<section class="section">
+  <div class="wrap">
+    <div class="manifesto reveal glow">
+      <p class="eyebrow mono">manifesto</p>
+      <h2>Código bem escrito.<br>Site que funciona.</h2>
+    </div>
+
+    <div class="testimonial-grid">
+      <div class="card testimonial reveal">
+        <p>"Fechei em uma conversa no WhatsApp e o site ficou pronto antes do prazo. Nada de enrolação."</p>
+        <div class="testimonial__who">
+          <div class="avatar">RN</div>
+          <div><strong>Ricardo N.</strong><small>Barbearia Nunes</small></div>
+        </div>
+      </div>
+      <div class="card testimonial reveal">
+        <p>"Finalmente um site com a cara da minha loja, não um template igual ao de todo mundo."</p>
+        <div class="testimonial__who">
+          <div class="avatar">CM</div>
+          <div><strong>Camila M.</strong><small>Studio Camila Modas</small></div>
+        </div>
+      </div>
+      <div class="card testimonial reveal">
+        <p>"Preço justo e falei direto com quem construiu o site do início ao fim. Recomendo."</p>
+        <div class="testimonial__who">
+          <div class="avatar">JP</div>
+          <div><strong>João P.</strong><small>Contabilidade JP</small></div>
+        </div>
+      </div>
+    </div>
+    <!-- AVISO PARA O DONO DO SITE: depoimentos ilustrativos — troque pelos relatos reais dos seus clientes antes de publicar -->
+  </div>
+</section>
+
+<!-- ================= PROCESSO ================= -->
+<section id="processo" class="section">
+  <div class="wrap">
+    <div class="heading-block reveal" style="margin-bottom:16px;">
+      <p class="eyebrow">como-funciona</p>
+      <h2>Do contato ao site no ar</h2>
+    </div>
+
+    <div class="process-grid">
+      <div class="process-line"></div>
+      <div class="step reveal">
+        <div class="step__num">01</div>
+        <h3>Contato no WhatsApp</h3>
+        <p>Você me chama e conta a ideia do seu negócio, sem compromisso.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step__num">02</div>
+        <h3>Proposta sem letras miúdas</h3>
+        <p>Orçamento claro, prazo e escopo definidos — sem pegadinha.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step__num">03</div>
+        <h3>Desenvolvimento acompanhado</h3>
+        <p>Você acompanha o site sendo construído, com espaço pra ajustes.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step__num step__num--final">04</div>
+        <h3>Site publicado</h3>
+        <p>No ar, testado e pronto pra atrair clientes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section id="faq" class="section">
+  <div class="wrap-sm">
+    <div class="heading-block reveal">
+      <p class="eyebrow">duvidas</p>
+      <h2>Perguntas frequentes</h2>
+    </div>
+
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-toggle" aria-expanded="false">
+          <span>Quanto tempo leva pra ficar pronto?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer"><p>Depende do tipo de site, mas a maioria dos projetos fica pronta em poucas semanas — o prazo exato eu te passo já na proposta.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-toggle" aria-expanded="false">
+          <span>Como funciona o pagamento?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer"><p>Combinamos direto no WhatsApp, sem letra miúda: valor fechado, dividido em etapas do projeto.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-toggle" aria-expanded="false">
+          <span>Você faz manutenção depois da entrega?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer"><p>Sim. Depois que o site vai ao ar, seguimos em contato direto pra ajustes e manutenção.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-toggle" aria-expanded="false">
+          <span>Preciso ter domínio e hospedagem?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer"><p>Não precisa ter nada pronto. Eu te oriento em cada passo, ou cuido disso pra você.</p></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-toggle" aria-expanded="false">
+          <span>Dá pra pedir ajustes depois que o site for lançado?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer"><p>Claro. A ideia é o site crescer junto com o seu negócio, então ajustes fazem parte.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CTA FINAL + FOOTER ================= -->
+<footer class="section">
+  <div class="wrap">
+    <div class="footer-cta reveal glow">
+      <h2>Vamos tirar sua ideia do papel?</h2>
+      <p>Chama no WhatsApp e conta como é o seu negócio — sem compromisso.</p>
+      <a href="https://wa.me/5562981368771?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20cria%C3%A7%C3%A3o%20de%20sites."
+         target="_blank" rel="noopener noreferrer" class="btn btn-gold">Falar no WhatsApp agora</a>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-brand"><span>&lt;/&gt;</span> velasco</div>
+      <div class="footer-links">
+        <a href="https://wa.me/5562981368771" target="_blank" rel="noopener noreferrer">(62) 98136-8771</a>
+        <a href="https://instagram.com/velascosites" target="_blank" rel="noopener noreferrer">instagram</a>
+        <a href="mailto:velascoservico@gmail.com">email</a>
+      </div>
+    </div>
+    <p class="footer-copy">© 2026 Velasco — Criação de Sites. Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+</main>
+
+<a href="https://wa.me/5562981368771?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20saber%20mais%20sobre%20cria%C3%A7%C3%A3o%20de%20sites."
+   target="_blank" rel="noopener noreferrer" aria-label="Chamar no WhatsApp" class="fab btn-gold">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M12 3C7.03 3 3 7.03 3 12c0 1.77.5 3.42 1.36 4.83L3 21l4.3-1.34A8.94 8.94 0 0012 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z" stroke="#0a0a0c" stroke-width="1.4"/>
+    <path d="M8.5 8.7c.15-.4.5-.4.8-.4h.55c.2 0 .4.05.55.4.2.45.6 1.5.65 1.6.05.15.08.3 0 .5-.08.2-.13.3-.25.45-.13.15-.27.35-.38.47-.13.13-.27.28-.12.55.15.28.68 1.15 1.48 1.85.98.9 1.8 1.18 2.08 1.3.28.13.45.1.6-.05.18-.18.7-.8.9-1.08.2-.28.4-.23.65-.13.28.1 1.75.83 2.05 1 .3.15.5.23.57.35.08.15.08.8-.18 1.6-.25.78-1.5 1.5-2.1 1.6-.55.1-1.2.15-3.85-.85-3.25-1.23-5.3-4.6-5.47-4.85-.15-.23-1.28-1.7-1.28-3.25 0-1.55.8-2.3 1.1-2.63z" fill="#0a0a0c"/>
+  </svg>
+</a>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Safety net: if anything below throws (script blocked, selector missing, etc.),
+  // .reveal elements must never stay stuck at opacity:0 forever.
+  var revealSafetyTimer = setTimeout(function(){
+    document.querySelectorAll('.reveal').forEach(function(el){ el.style.opacity = 1; el.style.transform = 'none'; });
+  }, 2500);
+
+  /* ---------- mobile menu ---------- */
+  var menuBtn = document.getElementById('menuBtn');
+  var menuClose = document.getElementById('menuClose');
+  var mobileMenu = document.getElementById('mobileMenu');
+  var menuOverlay = document.getElementById('menuOverlay');
+
+  function openMenu(){
+    mobileMenu.classList.add('open');
+    menuOverlay.classList.add('open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+  }
+  function closeMenu(){
+    mobileMenu.classList.remove('open');
+    menuOverlay.classList.remove('open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+  }
+  if (menuBtn && menuClose && mobileMenu && menuOverlay) {
+    menuBtn.addEventListener('click', openMenu);
+    menuClose.addEventListener('click', closeMenu);
+    menuOverlay.addEventListener('click', closeMenu);
+    document.querySelectorAll('.mobile-link').forEach(function(el){
+      el.addEventListener('click', closeMenu);
+    });
+  }
+
+  /* ---------- FAQ accordion ---------- */
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var btn = item.querySelector('.faq-toggle');
+    if (!btn) return;
+    btn.addEventListener('click', function(){
+      var isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function(i){
+        i.classList.remove('open');
+        var t = i.querySelector('.faq-toggle');
+        if (t) t.setAttribute('aria-expanded', 'false');
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  /* ---------- GSAP scroll reveals ---------- */
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    var reveals = gsap.utils.toArray('.reveal');
+    reveals.forEach(function(el){
+      if (reduced) { gsap.set(el, { opacity: 1, y: 0 }); return; }
+      gsap.fromTo(el, { opacity: 0, y: 28 }, {
+        opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 88%' }
+      });
+    });
+    clearTimeout(revealSafetyTimer);
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.style.opacity = 1; el.style.transform = 'none'; });
+    clearTimeout(revealSafetyTimer);
+  }
+
+  /* ---------- Hero typing animation ---------- */
+  var codePane = document.getElementById('codePane');
+  var pvHeading = document.getElementById('pvHeading');
+  var pvText = document.getElementById('pvText');
+  var pvButton = document.getElementById('pvButton');
+
+  var codeLines = [
+    { html: '<span style="color:var(--syn-comment)">&lt;!-- barbearia-nunes/index.html --&gt;</span>' },
+    { html: '<span style="color:var(--syn-tag)">&lt;section</span> class<span style="color:var(--syn-tag)">=</span><span style="color:var(--syn-string)">"hero"</span><span style="color:var(--syn-tag)">&gt;</span>' },
+    { html: '&nbsp;&nbsp;<span style="color:var(--syn-tag)">&lt;h1&gt;</span>Barbearia Nunes<span style="color:var(--syn-tag)">&lt;/h1&gt;</span>', reveal: pvHeading },
+    { html: '&nbsp;&nbsp;<span style="color:var(--syn-tag)">&lt;p&gt;</span>Cortes clássicos, ambiente moderno.<span style="color:var(--syn-tag)">&lt;/p&gt;</span>', reveal: pvText },
+    { html: '&nbsp;&nbsp;<span style="color:var(--syn-tag)">&lt;button&gt;</span>Agendar horário<span style="color:var(--syn-tag)">&lt;/button&gt;</span>', reveal: pvButton },
+    { html: '<span style="color:var(--syn-tag)">&lt;/section&gt;</span>' }
+  ];
+
+  // Reveals `count` visible characters of an HTML string, keeping tags
+  // (and thus colors) intact — avoids "typing" through raw tag markup,
+  // which is what made the animation look like it froze mid-line.
+  function typedHTML(fullHtml, count){
+    var tmp = document.createElement('div');
+    tmp.innerHTML = fullHtml;
+    var used = 0;
+
+    function walk(node){
+      for (var i = 0; i < node.childNodes.length; i++){
+        var child = node.childNodes[i];
+        if (child.nodeType === 3) {
+          var text = child.textContent;
+          var remaining = count - used;
+          if (text.length >= remaining) {
+            child.textContent = text.slice(0, Math.max(remaining, 0));
+            used = count;
+            while (node.childNodes.length > i + 1) node.removeChild(node.childNodes[i + 1]);
+            return true;
+          }
+          used += text.length;
+        } else if (child.nodeType === 1) {
+          if (walk(child)) {
+            while (node.childNodes.length > i + 1) node.removeChild(node.childNodes[i + 1]);
+            return true;
+          }
+        }
+        if (used >= count) {
+          while (node.childNodes.length > i + 1) node.removeChild(node.childNodes[i + 1]);
+          return true;
+        }
+      }
+      return false;
+    }
+    walk(tmp);
+    return tmp.innerHTML;
+  }
+
+  function visibleLength(html){
+    var tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    return tmp.textContent.length;
+  }
+
+  function typeCode(){
+    codePane.innerHTML = '';
+    var lineIndex = 0;
+
+    function nextLine(){
+      if (lineIndex >= codeLines.length) return;
+      var lineData = codeLines[lineIndex];
+      var lineEl = document.createElement('div');
+      lineEl.className = 'code-line';
+      var caret = document.createElement('span');
+      caret.className = 'caret';
+      lineEl.appendChild(caret);
+      codePane.appendChild(lineEl);
+
+      var full = lineData.html;
+      var steps = Math.max(visibleLength(full), 1);
+      var i = 0;
+      var speed = 18;
+
+      function typeStep(){
+        i++;
+        if (i >= steps) {
+          lineEl.innerHTML = full;
+          if (lineData.reveal && window.gsap) {
+            gsap.to(lineData.reveal, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' });
+          } else if (lineData.reveal) {
+            lineData.reveal.style.opacity = 1;
+          }
+          lineIndex++;
+          setTimeout(nextLine, 0);
+          return;
+        }
+        lineEl.innerHTML = typedHTML(full, i);
+        lineEl.appendChild(caret);
+        setTimeout(typeStep, speed);
+      }
+      typeStep();
+    }
+    nextLine();
+  }
+
+  if (codePane) {
+    if (reduced) {
+      codePane.innerHTML = codeLines.map(function(l){ return '<div class="code-line">' + l.html + '</div>'; }).join('');
+      [pvHeading, pvText, pvButton].forEach(function(el){ if (el) el.style.opacity = 1; });
+    } else {
+      setTimeout(typeCode, 500);
+    }
+  }
+});
+</script>
+
+</body>
+</html>
