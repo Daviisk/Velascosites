@@ -6,6 +6,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Velasco — Sites sob medida para o seu negócio</title>
 <meta name="description" content="Sites rápidos, modernos e feitos sob medida. Do primeiro contato ao site no ar, sem enrolação e falando direto com o desenvolvedor.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#08080a">
+
+<!-- ATENÇÃO: troque pela URL real do site publicado antes de ir ao ar -->
+<link rel="canonical" href="https://velascosites.vercel.app/">
+
+<!-- Favicon: marca "</>" em SVG, sem precisar de arquivo externo -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2308080a'/%3E%3Ctext x='16' y='21' font-family='JetBrains Mono,monospace' font-size='13' font-weight='700' fill='%23c9a463' text-anchor='middle'%3E%3C/%3E%3C/text%3E%3C/svg%3E">
+
+<!-- Open Graph / redes sociais -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="Velasco — Criação de Sites">
+<meta property="og:title" content="Velasco — Sites sob medida para o seu negócio">
+<meta property="og:description" content="Sites rápidos, modernos e feitos sob medida. Do primeiro contato ao site no ar, sem enrolação e falando direto com o desenvolvedor.">
+<meta property="og:url" content="https://velascosites.vercel.app/">
+<!-- ATENÇÃO: gere uma imagem 1200x630 (ex: print do hero) e troque a URL abaixo -->
+<meta property="og:image" content="https://velascosites.vercel.app/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Velasco — Sites sob medida para o seu negócio">
+<meta name="twitter:description" content="Sites rápidos, modernos e feitos sob medida, direto com quem constrói.">
+<meta name="twitter:image" content="https://velascosites.vercel.app/og-image.jpg">
 
 <!-- Cabeçalhos de segurança que podem ser definidos via <meta> (o resto vai no vercel.json, pois só funcionam como cabeçalho HTTP real) -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self';">
@@ -19,6 +43,55 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.net.min.js" referrerpolicy="no-referrer"></script>
+
+<!-- Dados estruturados: ajudam o Google a entender o negócio e podem gerar rich snippets de FAQ nos resultados de busca -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Velasco — Criação de Sites",
+  "description": "Sites rápidos, modernos e feitos sob medida para pequenos negócios locais, do primeiro contato ao site no ar.",
+  "url": "https://velascosites.vercel.app/",
+  "telephone": "+5562981368771",
+  "email": "velascoservico@gmail.com",
+  "sameAs": ["https://instagram.com/velascosites"],
+  "areaServed": "BR",
+  "priceRange": "$$"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Quanto tempo leva pra ficar pronto?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Depende do tipo de site, mas a maioria dos projetos fica pronta em poucas semanas — o prazo exato é passado já na proposta." }
+    },
+    {
+      "@type": "Question",
+      "name": "Como funciona o pagamento?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Combinado direto no WhatsApp, sem letra miúda: valor fechado, dividido em etapas do projeto." }
+    },
+    {
+      "@type": "Question",
+      "name": "Você faz manutenção depois da entrega?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sim. Depois que o site vai ao ar, o contato direto segue para ajustes e manutenção." }
+    },
+    {
+      "@type": "Question",
+      "name": "Preciso ter domínio e hospedagem?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Não precisa ter nada pronto. Há orientação em cada passo, ou isso é resolvido diretamente." }
+    },
+    {
+      "@type": "Question",
+      "name": "Dá pra pedir ajustes depois que o site for lançado?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sim. A ideia é o site crescer junto com o negócio, então ajustes fazem parte." }
+    }
+  ]
+}
+</script>
 
 <style>
   :root{
@@ -442,7 +515,7 @@
 
 <a href="#conteudo" class="sr-only skip-link">Pular para o conteúdo</a>
 
-<div class="grain"></div>
+<div class="grain" aria-hidden="true"></div>
 
 <!-- ================= NAV ================= -->
 <header class="nav" id="topo">
@@ -508,8 +581,7 @@
         </div>
 
         <div class="hero__badge reveal">
-          <span class="status-dot"></span>
-          <span>Atendimento direto, sem agência e sem intermediário.</span>
+          <span class="status-dot" aria-hidden="true"></span>, sem agência e sem intermediário.</span>
         </div>
       </div>
 
@@ -835,7 +907,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (vantaBg && !reduced && window.VANTA && window.VANTA.NET) {
     window.VANTA.NET({
       el: vantaBg,
-      mouseControls: true,
+      mouseControls: false,
       touchControls: false,
       gyroControls: false,
       minHeight: 200.00,
