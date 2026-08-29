@@ -39,12 +39,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.net.min.js" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" referrerpolicy="no-referrer" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" referrerpolicy="no-referrer" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" referrerpolicy="no-referrer" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.net.min.js" referrerpolicy="no-referrer" defer></script>
 
-<!-- Dados estruturados: ajudam o Google a entender o negócio e podem gerar rich snippets de FAQ nos resultados de busca -->
+<!-- Dados estruturados: ajudam o Google a entender o negócio (rich result de "Empresa local"). O bloco FAQPage abaixo continua válido como marcação, mas não gera mais rich snippet visível — o Google descontinuou esse recurso pra todos os sites em maio de 2026. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -52,6 +52,7 @@
   "name": "Velasco — Criação de Sites",
   "description": "Sites rápidos, modernos e feitos sob medida para pequenos negócios locais, do primeiro contato ao site no ar.",
   "url": "https://velascosites.vercel.app/",
+  "image": "https://velascosites.vercel.app/og-image.jpg",
   "telephone": "+5562981368771",
   "email": "velascoservico@gmail.com",
   "sameAs": ["https://instagram.com/velascosites"],
@@ -361,6 +362,7 @@
   .pain-card--good li span{ color:var(--goldlight); }
 
   .tag-row{ margin-top:24px; display:flex; flex-wrap:wrap; gap:10px; }
+  .service-copy{ margin-top:28px; max-width:680px; color:var(--inkmute); font-size:0.94rem; line-height:1.75; }
   .tag{ font-family:var(--font-mono); font-size:0.72rem; border:1px solid var(--line); border-radius:999px; padding:8px 16px; color:var(--inkmute); }
 
   /* ---------- diferenciais ---------- */
@@ -647,6 +649,10 @@
       <span class="tag">Landing pages de conversão</span>
       <span class="tag">Sites para comércio local</span>
     </div>
+
+    <p class="service-copy reveal">
+      A Velasco faz sites sob medida para pequenos negócios locais — barbearias, salões, lojas de roupa, pizzarias, escritórios de contabilidade e prestadores de serviço que precisam de uma presença online rápida e profissional. Cada projeto é pensado pro seu tipo de negócio: um site para barbearia não deve parecer o mesmo template usado por uma loja de celulares. Se você procura um desenvolvedor de sites freelancer que entrega rápido, cobra justo e fala direto com você do início ao fim, é esse o trabalho.
+    </p>
   </div>
 </section>
 
